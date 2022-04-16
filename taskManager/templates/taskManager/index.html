@@ -1,0 +1,64 @@
+{% extends "taskManager/base.html" %}
+{% block content %}
+    <div class="container">
+
+        <div class="container" style="padding-top: 5%;">
+            <h1>Task Manager</h1>
+            <div class="row">
+                <div class="col text-end" style="padding-bottom: 20px;"><a class="btn btn-primary text-end"
+                                                                           type="button"
+                                                                           style="padding-bottom: 10px;background: var(--bs-orange);"
+                                                                           href={% url 'taskManager:addTask' %}>Add
+                    Task</a></div>
+            </div>
+            {% if task_list %}
+                <div class="table-responsive" style="border-color: var(--bs-table-striped-color);">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Task</th>
+                            <th>Employee</th>
+                            <th>Due Date</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody style="border-style: solid;border-color: black;">
+                        {% for task in task_list %}
+                            <tr style="border-style: solid;border-color: black;">
+                                {% if task.is_past_due %}
+                                    <td style="background-color: #ffb3b3">{{ task.task_title }}</td>
+                                    <td style="background-color: #ffb3b3">{{ task.employee }}</td>
+                                    <td style="background-color: #ffb3b3">{{ task.due_date|date:"d.m.Y" }}</td>
+                                    <td style="background-color: #ffb3b3">
+                                        <a class="btn btn-outline-primary" type="button"
+                                           href={% url 'taskManager:delete' task.id %}>Done</a>
+
+                                    </td>
+                                {% else %}
+                                    <td>{{ task.task_title }}</td>
+                                    <td>{{ task.employee }}</td>
+                                    <td>{{ task.due_date|date:"d.m.Y" }}</td>
+                                    <td>
+                                        <a class="btn btn-outline-primary" type="button"
+                                           href={% url 'taskManager:delete' task.id %}>Done</a>
+                                    </td>
+                                {% endif %}
+
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p>No tasks are available.</p>
+            {% endif %}
+        </div>
+    </div>
+
+
+
+
+
+
+
+{% endblock %}
